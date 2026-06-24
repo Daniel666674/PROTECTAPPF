@@ -1,73 +1,170 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Política de Privacidad | Protecta</title>
-  <meta name="description" content="Política de tratamiento de datos personales de Protecta conforme a la Ley 1581 de 2012 (Colombia)." />
-  <meta name="robots" content="index, follow" />
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="nav">
-    <a href="index.html" class="brand"><img src="assets/logo-shield.png" alt="Protecta" class="brand-mark" /><span class="brand-name">PROTECTA<span class="brand-r">®</span></span></a>
-    <a href="index.html" class="btn btn-ghost btn-sm" style="margin-left:auto">← Volver al inicio</a>
-  </header>
+/* PROTECTA — interactions */
+(function () {
+  'use strict';
+  var WA = '573112699903';
 
-  <main class="legal">
-    <a href="index.html" class="back">← Inicio</a>
-    <h1>Política de Privacidad y Tratamiento de Datos</h1>
-    <p class="updated">Última actualización: 2026</p>
+  /* year */
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
 
-    <p class="note">Plantilla base conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013 de Colombia (habeas data). Recomendamos que un abogado la revise y ajuste antes de publicarla en producción.</p>
+  /* mobile nav */
+  var toggle = document.getElementById('nav-toggle');
+  var links = document.getElementById('nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') { links.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }
+    });
+  }
 
-    <h2>1. Responsable del tratamiento</h2>
-    <p>Protecta, con domicilio en Carrera 29 #71-35, Barrios Unidos, Bogotá, Colombia, es responsable del tratamiento de los datos personales recolectados a través de este sitio web y de sus canales de contacto (WhatsApp, Instagram).</p>
-    <p>Contacto: <a href="https://wa.me/573112699903">+57 311 269 9903</a> · <a href="https://instagram.com/protecta_ppf">@protecta_ppf</a></p>
+  /* reveal on scroll */
+  var reveals = document.querySelectorAll('.section, .service-card, .cover-card, .why-card, .hero-copy, .hero-visual, .video-card');
+  if ('IntersectionObserver' in window) {
+    reveals.forEach(function (el) { el.classList.add('reveal'); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
 
-    <h2>2. Datos que recolectamos</h2>
-    <ul>
-      <li>Datos de identificación y contacto que tú nos proporcionas: nombre, número de teléfono/WhatsApp.</li>
-      <li>Información de tu vehículo y del servicio de interés (marca, línea, año, servicios y cobertura solicitados).</li>
-      <li>Datos técnicos de navegación básicos (cookies necesarias para el funcionamiento del sitio).</li>
-    </ul>
+  /* cobertura tabs */
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('is-active'); });
+      t.classList.add('is-active');
+      var v = t.getAttribute('data-vehicle');
+      document.querySelectorAll('.cover-grid').forEach(function (g) {
+        g.classList.toggle('hidden', g.getAttribute('data-group') !== v);
+      });
+    });
+  });
 
-    <h2>3. Finalidad del tratamiento</h2>
-    <ul>
-      <li>Atender tus solicitudes de cotización y contacto.</li>
-      <li>Elaborar y enviarte presupuestos personalizados.</li>
-      <li>Prestar y dar seguimiento a los servicios contratados.</li>
-      <li>Enviarte información comercial sobre nuestros servicios, cuando lo autorices.</li>
-    </ul>
+  /* cookie consent */
+  var cookie = document.getElementById('cookie');
+  if (cookie && !localStorage.getItem('protecta_cookie')) { cookie.hidden = false; }
+  function closeCookie(v) { localStorage.setItem('protecta_cookie', v); if (cookie) cookie.hidden = true; }
+  var ca = document.getElementById('cookie-accept'), cr = document.getElementById('cookie-reject');
+  if (ca) ca.addEventListener('click', function () { closeCookie('accepted'); });
+  if (cr) cr.addEventListener('click', function () { closeCookie('rejected'); });
 
-    <h2>4. Autorización</h2>
-    <p>Al enviar tus datos a través del cotizador o de nuestros canales de contacto, autorizas de manera previa, expresa e informada el tratamiento de tus datos personales conforme a esta política.</p>
+  /* ===== COTIZADOR ===== */
+  var form = document.getElementById('quoter-form');
+  if (!form) return;
+  var state = { vehiculo: '', servicios: [], paquete: '', extras: [] };
+  var step = 1, MAX = 5;
+  var panels = form.querySelectorAll('.qpanel');
+  var stepEls = document.querySelectorAll('#quoter-steps .qstep');
+  var prevBtn = document.getElementById('q-prev');
+  var nextBtn = document.getElementById('q-next');
+  var sendBtn = document.getElementById('q-send');
+  var summary = document.getElementById('quoter-summary');
 
-    <h2>5. Tus derechos como titular</h2>
-    <p>Como titular de los datos puedes, en cualquier momento: conocer, actualizar y rectificar tus datos; solicitar prueba de la autorización otorgada; ser informado sobre el uso dado a tus datos; presentar quejas ante la Superintendencia de Industria y Comercio; y revocar la autorización y/o solicitar la supresión de tus datos cuando proceda.</p>
-    <p>Para ejercer estos derechos, escríbenos a <a href="https://wa.me/573112699903">+57 311 269 9903</a>.</p>
+  /* quick pick (vehicle) */
+  form.querySelectorAll('.quick-pick .chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      form.querySelectorAll('.quick-pick .chip').forEach(function (c) { c.classList.remove('is-on'); });
+      chip.classList.add('is-on');
+      state.vehiculo = chip.getAttribute('data-value');
+      var map = { 'Tesla Model Y': ['Tesla', 'Model Y'], 'BYD Yuan Up': ['BYD', 'Yuan Up'] };
+      if (map[state.vehiculo]) {
+        form.querySelector('[name=marca]').value = map[state.vehiculo][0];
+        form.querySelector('[name=linea]').value = map[state.vehiculo][1];
+      }
+    });
+  });
 
-    <h2>6. Cookies</h2>
-    <p>Este sitio utiliza cookies y almacenamiento local mínimos para recordar tus preferencias (por ejemplo, el aviso de cookies) y mejorar tu experiencia. No utilizamos estos datos para perfilamiento publicitario de terceros. Puedes deshabilitar las cookies desde la configuración de tu navegador.</p>
+  /* option buttons (single + multi) */
+  form.querySelectorAll('.opt-grid').forEach(function (grid) {
+    var field = grid.getAttribute('data-field');
+    var multi = grid.getAttribute('data-multi') === 'true';
+    grid.querySelectorAll('.opt').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        var val = opt.getAttribute('data-value');
+        if (multi) {
+          opt.classList.toggle('is-on');
+          var i = state[field].indexOf(val);
+          if (i > -1) state[field].splice(i, 1); else state[field].push(val);
+        } else {
+          var on = opt.classList.contains('is-on');
+          grid.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('is-on'); });
+          if (on) { state[field] = ''; } else { opt.classList.add('is-on'); state[field] = val; }
+        }
+      });
+    });
+  });
 
-    <h2>7. Seguridad y conservación</h2>
-    <p>Adoptamos medidas razonables para proteger tus datos. Conservaremos tu información durante el tiempo necesario para cumplir las finalidades descritas y las obligaciones legales aplicables.</p>
+  function show(n, scroll) {
+    step = Math.max(1, Math.min(MAX, n));
+    panels.forEach(function (p) { p.classList.toggle('is-active', +p.getAttribute('data-step') === step); });
+    stepEls.forEach(function (el, i) {
+      el.classList.toggle('is-active', i + 1 === step);
+      el.classList.toggle('done', i + 1 < step);
+    });
+    prevBtn.hidden = step === 1;
+    nextBtn.hidden = step === MAX;
+    sendBtn.hidden = step !== MAX;
+    if (step === MAX) buildSummary();
+    if (scroll) document.getElementById('cotizador').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
-    <h2>8. Cambios</h2>
-    <p>Podemos actualizar esta política. La versión vigente siempre estará disponible en esta página.</p>
+  function readInputs() {
+    state.marca = (form.querySelector('[name=marca]').value || '').trim();
+    state.linea = (form.querySelector('[name=linea]').value || '').trim();
+    state.anio = (form.querySelector('[name=anio]').value || '').trim();
+    state.nombre = (form.querySelector('[name=nombre]').value || '').trim();
+    state.telefono = (form.querySelector('[name=telefono]').value || '').trim();
+    state.comentario = (form.querySelector('[name=comentario]').value || '').trim();
+  }
 
-    <p style="margin-top:2rem"><a href="index.html" class="back">← Volver al inicio</a></p>
-  </main>
+  function vehicleLabel() {
+    var parts = [state.marca, state.linea, state.anio].filter(Boolean).join(' ');
+    return parts || state.vehiculo || '—';
+  }
 
-  <footer class="footer">
-    <div class="footer-bottom" style="border:0;justify-content:center">© <span id="year"></span> Protecta · Carrera 29 #71-35, Bogotá</div>
-  </footer>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-  <script src="demo-shield.js"></script>
-  <script>document.body.classList.add('has-demo-banner');</script>
-</body>
-</html>
+  function buildSummary() {
+    readInputs();
+    var rows = [];
+    rows.push('<li><b>Vehículo:</b>&nbsp;' + esc(vehicleLabel()) + '</li>');
+    if (state.servicios.length) rows.push('<li><b>Servicios:</b>&nbsp;' + esc(state.servicios.join(', ')) + '</li>');
+    if (state.paquete) rows.push('<li><b>Cobertura PPF:</b>&nbsp;' + esc(state.paquete) + '</li>');
+    if (state.extras.length) rows.push('<li><b>Extras:</b>&nbsp;' + esc(state.extras.join(', ')) + '</li>');
+    summary.innerHTML = '<b>Resumen de tu solicitud</b><ul>' + rows.join('') + '</ul>';
+    summary.classList.add('show');
+  }
+
+  function esc(s) { return String(s).replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }); }
+
+  prevBtn.addEventListener('click', function () { show(step - 1, true); });
+  nextBtn.addEventListener('click', function () {
+    if (step === 1) { readInputs(); if (!state.vehiculo && !state.marca) { alert('Cuéntanos qué vehículo es para continuar.'); return; } }
+    if (step === 2 && state.servicios.length === 0) { alert('Elige al menos un servicio.'); return; }
+    show(step + 1, true);
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    readInputs();
+    if (!state.nombre || !state.telefono) { alert('Por favor déjanos tu nombre y teléfono.'); return; }
+    if (!document.getElementById('consent').checked) { alert('Para enviar, autoriza el tratamiento de datos.'); return; }
+
+    var L = [];
+    L.push('Hola Protecta 👋, quiero una cotización:');
+    L.push('');
+    L.push('🚗 Vehículo: ' + vehicleLabel());
+    if (state.servicios.length) L.push('🛡️ Servicios: ' + state.servicios.join(', '));
+    if (state.paquete) L.push('📦 Cobertura PPF: ' + state.paquete);
+    if (state.extras.length) L.push('✨ Extras: ' + state.extras.join(', '));
+    L.push('');
+    L.push('👤 ' + state.nombre + ' — ' + state.telefono);
+    if (state.comentario) L.push('💬 ' + state.comentario);
+
+    var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(L.join('\n'));
+    window.open(url, '_blank');
+  });
+
+  show(1);
+})();
