@@ -10,12 +10,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
-  <header class="nav">
-    <a href="index.html" class="brand"><img src="logo-shield.png" alt="Protecta" class="brand-mark" /><span class="brand-name">PROTECTA<span class="brand-r">®</span></span></a>
-    <a href="index.html" class="btn btn-ghost btn-sm" style="margin-left:auto">← Volver al inicio</a>
+
+  <header class="nav" id="nav">
+    <a href="index.html" class="brand" aria-label="Protecta inicio">
+      <img src="logo-shield.png" alt="Protecta" class="brand-mark" />
+      <span class="brand-name">PROTECTA<span class="brand-r">®</span></span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="galeria.html">Galería</a>
+      <a href="cobertura.html">Cobertura PPF</a>
+      <a href="cotizador.html">Cotizador</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+    <a href="cotizador.html" class="btn btn-primary nav-cta">Cotizar</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
   <main class="legal">
@@ -66,6 +81,7 @@
   <footer class="footer">
     <div class="footer-bottom" style="border:0;justify-content:center">© <span id="year"></span> Protecta · Carrera 29 #71-35, Bogotá</div>
   </footer>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+
+  <script src="scripts.js?v=4"></script>
 </body>
 </html>
