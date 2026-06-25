@@ -108,7 +108,7 @@
     nextBtn.hidden = step === MAX;
     sendBtn.hidden = step !== MAX;
     if (step === MAX) buildSummary();
-    if (scroll) document.getElementById('cotizador').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (scroll) { var el = document.getElementById('quoter'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
   }
 
   function readInputs() {

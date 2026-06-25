@@ -52,6 +52,8 @@ section{scroll-margin-top:80px}
 .nav-links a:hover{color:var(--teal)}
 .nav-links a::after{content:'';position:absolute;left:0;bottom:-5px;width:0;height:2px;background:var(--teal);transition:width .25s}
 .nav-links a:hover::after{width:100%}
+.nav-links a.active{color:var(--teal)}
+.nav-links a.active::after{width:100%}
 .nav-cta{padding:.6em 1.3em}
 .nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px}
 .nav-toggle span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
@@ -221,6 +223,39 @@ section{scroll-margin-top:80px}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
 
+/* Page header */
+.page-header{text-align:center;padding:clamp(3rem,6vw,5rem) clamp(1rem,4vw,3.5rem) clamp(1.5rem,3vw,2.5rem);background:linear-gradient(180deg,var(--soft),#fff);max-width:52rem;margin:0 auto}
+.page-header .kicker{color:var(--teal);font-family:var(--display);font-weight:600;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+.page-header h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;margin:.5rem 0 .6rem}
+.page-header p{color:var(--slate);font-size:1.05rem;max-width:36rem;margin:0 auto}
+
+/* CTA Banner */
+.cta-banner{background:var(--dark);padding:clamp(2.5rem,5vw,4rem) clamp(1rem,4vw,3.5rem)}
+.cta-banner-inner{max-width:720px;margin:0 auto;text-align:center}
+.cta-banner h2{color:#fff;font-size:clamp(1.6rem,3.5vw,2.2rem);margin-bottom:.5rem}
+.cta-banner p{color:#9fb0b5;font-size:1.05rem;margin-bottom:1.5rem}
+.cta-banner-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn-ghost-light{color:#fff;border-color:rgba(255,255,255,.25)}
+.btn-ghost-light:hover{border-color:var(--teal);color:var(--teal)}
+
+/* Service detail */
+.services-grid-detail{grid-template-columns:1fr 1fr;gap:1.6rem}
+.service-card-detail{padding:2rem}
+.service-card-detail p{margin-bottom:1.2rem}
+.service-features{list-style:none;display:grid;gap:.4rem;margin-bottom:1.4rem;padding:0}
+.service-features li{display:flex;align-items:center;gap:.5rem;font-size:.92rem;color:var(--ink)}
+.service-features li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none}
+
+/* Section CTA */
+.section-cta-wrap{text-align:center;margin-top:1.6rem}
+
+/* Gallery preview (home) */
+.gallery-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
+.gallery-preview .gallery-item{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1;cursor:pointer;transition:.3s}
+.gallery-preview .gallery-item:hover{transform:scale(1.02);box-shadow:var(--shadow-lg)}
+.gallery-preview .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.gallery-preview .gallery-item:hover img{transform:scale(1.06)}
+
 /* Gallery */
 .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:.8rem}
 .gallery-item{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:.3s}
@@ -241,6 +276,8 @@ section{scroll-margin-top:80px}
   .services-grid{grid-template-columns:1fr 1fr}
   .cover-grid{grid-template-columns:1fr 1fr}
   .gallery-grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:200px}
+  .gallery-preview{grid-template-columns:repeat(2,1fr)}
+  .services-grid-detail{grid-template-columns:1fr 1fr}
   .why-grid{grid-template-columns:1fr}
   .ubic-grid{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr 1fr}
@@ -272,6 +309,11 @@ section{scroll-margin-top:80px}
   .services-grid,.cover-grid,.opt-grid{grid-template-columns:1fr}
   .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
   .gallery-wide,.gallery-tall{grid-column:auto;grid-row:auto}
+  .gallery-preview{grid-template-columns:1fr 1fr}
+  .services-grid-detail{grid-template-columns:1fr}
+  .cta-banner-btns{flex-direction:column;align-items:center}
+  .page-header{padding:2rem 1rem 1.5rem}
+  .page-header h1{font-size:1.6rem}
   .service-card{padding:1.3rem}
   .service-card h3{font-size:1.05rem}
   .service-card p{font-size:.9rem}
